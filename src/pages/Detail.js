@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, TouchableHighlight, Text, Image, ScrollView } from 'react-native';
 import api from '../services/api'
-//import call from 'react-native-phone-call'
+import call from 'react-native-phone-call'
 //import { MapView } from 'react-native-maps'
 import Comments from '../components/Comments'
 import Header from '../components/Header'
@@ -9,7 +9,9 @@ import Header from '../components/Header'
 
 export default class Detail extends Component {
 
-
+static navigationOptions = {
+    header: null
+  }
 
   state = {
     detail: {},
@@ -24,8 +26,8 @@ export default class Detail extends Component {
 
 
   async componentDidMount(){
-    const {id} = this.props.navigation.state.params.task
-    const response = await api.get('tarefa/1')
+    const id = this.props.navigation.state.params.task
+    const response = await api.get(`tarefa/${id}`)
     this.setState({detail: response.data})
     this.setState({comments : response.data.comentarios})
     this.setState({longitude : response.data.longitude})
@@ -34,11 +36,11 @@ export default class Detail extends Component {
 
   render() {
     const {navigate} = this.props.navigation
- // const phone = '../assets/img/LIGAR.png';
- // const services = '../assets/img/SERVICOS.png';
- // const address = '../assets/img/ENDERECO.png';
- // const comments = '../assets/img/COMENTARIOS.png';
- //   const favorites = '../../assets/img/FAVORITOS.png';
+    const phone = '../assets/img/LIGAR.png';
+    const services = '../assets/img/SERVICOS.png';
+    const address = '../assets/img/ENDERECO.png';
+    const comments = '../assets/img/COMENTARIOS.png';
+    const favorites = '../assets/img/FAVORITOS.png';
     let cover = {uri: this.state.detail.urlFoto}
     let profile = {uri: this.state.detail.urlLogo}
 
@@ -58,13 +60,19 @@ export default class Detail extends Component {
           </View>
           <View style={styles.container}>
             <View style={styles.menu}>
-                <Image source={cover} style={styles.menuFirst} />
-            
-                <Image source={cover} style={styles.menuItens} />
-
-              <Image source={cover} style={styles.menuItens} />
-              <Image source={cover} style={styles.menuItens} />
-              <Image source={cover} style={styles.menuLast} />
+            <View style={styles.menuFirst}>
+            <TouchableHighlight onPress={() => call(args).catch(console.error)}>
+                <Image source={require(phone)} style={{width:'90%', height:70}} /> 
+            </TouchableHighlight>
+            </View>
+            <View style={styles.menuItens}>
+            <TouchableHighlight onPress={() => navigate('Services')}>
+                <Image style={{width:'90%', height:70}} source={require(services)}/>
+            </TouchableHighlight>
+            </View>
+              <Image source={require(address)} style={styles.menuItens} />
+              <Image source={require(comments)} style={styles.menuItens} />
+              <Image source={require(favorites)} style={styles.menuLast} />
             </View>
             <View style={styles.divider} />
             <Text style={styles.description}>{this.state.detail.texto}</Text>
@@ -74,7 +82,7 @@ export default class Detail extends Component {
             />
             <View style={styles.mapFooter}>
               <Text style={styles.mapAddress}>{this.state.detail.endereco}</Text>
-              <Image source={cover} style={styles.addressIcon} />
+              <Image source={require(address)} style={styles.addressIcon} />
             </View>
             {this.state.comments.map(comment => 
               <Comments key={comment} comment={comment}/>
@@ -100,19 +108,20 @@ const styles = StyleSheet.create({
 
     coverImage:{
       width: '100%',
-      height: 100,
+      height: 200,
       marginRight: 5
     },
 
     profileHeader:{
-      flexDirection: 'row',
+      flexDirection: 'column',
       flex:1, 
-      marginBottom: 5
+      marginBottom: 20
     },
 
     profileName:{
       width: '100%',
       color: '#ffa500',
+      fontSize: 22,
       fontWeight: 'bold',
       marginLeft: 5,
       marginTop:5
@@ -121,18 +130,19 @@ const styles = StyleSheet.create({
     profileImage:{
       backgroundColor: '#FFF',
       alignSelf:'flex-end',
-      width: 50,
-      height: 50,
-      marginRight: 10,
+      width: 85,
+      height: 85,
+      marginRight: 15,
       borderRadius:100,
-      marginTop:-20 
+      marginTop:-65 
     },
 
     container:{
       flex:1,
       backgroundColor: '#FFF',
       backgroundColor:'white',
-      marginHorizontal: '5%'
+      marginHorizontal: '5%',
+      marginBottom: 50
     },
 
     menu:{
@@ -142,58 +152,64 @@ const styles = StyleSheet.create({
 
     menuFirst:{
       width: '15%',
-      height: 35,
-      marginLeft: 3
+      height: 70,
+      marginLeft: 3,
+      marginTop: 5
     },
 
     menuLast:{
       width: '15%',
-      height: 35,
-      marginRight: 3
+      height: 70,
+      marginRight: 3,
+      marginTop: 5
     },
 
     menuItens:{
       width: '15%',
-      height: 35
+      height: 70,
+      marginTop: 5
     },
 
     divider: {
-      borderWidth: 0.5,
+      borderWidth: 0.8,
       borderColor:'#f9f9f9',
-      margin: 3
+      margin: 6
     },
 
     description: {
       color:'#ffa500',
-      fontSize: 7,
+      fontSize: 12,
       marginHorizontal: '3%',
-      marginBottom:2
+      marginBottom:4
     },
     
     map:{
       width: '100%',
-      height: 50,
-      marginRight: 5
+      height: 100,
+      marginRight: 10
     },
 
     mapFooter:{
       backgroundColor:'#ffa500',
-      height:8,
+      height:16,
       flexDirection:'row',
       alignItems:'center',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      marginBottom: 10
     },
 
     mapAddress: {
       color:'white',
-      fontSize: 5,
+      fontSize: 10,
+      marginLeft: 10
     },
 
     addressIcon:{
-      width: 10,
-      height: 10,
+      width: 20,
+      height: 20,
       marginHorizontal: 5,
-      marginTop: -5,
+      backgroundColor: '#FFF',
+      marginTop: -10,
       borderRadius: 100
     },
 

@@ -31,7 +31,7 @@ export default class List extends Component {
           )} 
         </ScrollView>
       </View>
-    );task
+    );
   }
 }
 

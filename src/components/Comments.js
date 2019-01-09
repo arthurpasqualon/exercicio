@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-//import {Rating} from 'react-native-elements'
+import {Rating} from 'react-native-elements'
 
 
 export default class Comments extends Component {
@@ -8,6 +8,7 @@ export default class Comments extends Component {
   
   render() {
    let profile = {uri : this.props.comment.urlFoto}
+   let nota = this.props.comment.nota
     return (
       <View style={styles.comment}>
         <Image source={profile} style={styles.commentProfile} />
@@ -17,6 +18,13 @@ export default class Comments extends Component {
           <Text style={styles.commentText}>{this.props.comment.comentario}</Text>
         </View>
         <View style={styles.ratingBox}>
+          <Rating
+            imageSize={8}
+            type='star'
+            ratingColor='#ffa500'
+            readonly
+            startingValue={nota}
+            />
         </View>
       </View>
     );
@@ -47,7 +55,7 @@ commentContent: {
 commentAuthor: {
   color:'#ffa500',
   width:'100%',
-  fontSize: 7,
+  fontSize: 12,
   marginHorizontal: '3%',
   marginBottom:2
 },
@@ -55,14 +63,14 @@ commentAuthor: {
 commentTitle: {
   color:'#ffa500',
   width:'100%',
-  fontSize: 7,
+  fontSize: 10,
   marginHorizontal: '3%',
   marginBottom:2
 },
 
 commentText: {color:'#ffa500',
-width:'120%',
-fontSize: 7,
+width:'100%',
+fontSize: 10,
 marginHorizontal: '3%',
 marginBottom:2
 },

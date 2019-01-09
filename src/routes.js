@@ -6,9 +6,15 @@ import Services from './pages/Services';
 
 
 const Routes = createStackNavigator ({
-    List,
-    Detail,
-    Services,
+    Home:{
+	screen: List
+    },
+    Detail:{
+	screen: Detail
+    },
+    Services:{
+	screen: Services
+    }
 });
 
 export default createAppContainer(Routes);
