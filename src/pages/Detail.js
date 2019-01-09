@@ -215,4 +215,12 @@ const styles = StyleSheet.create({
 
 });
 
+/*
+
+TODO
+ 	    <MapView
+              region={this.state.region}
+              style={styles.map}
+            />
+*/
 
