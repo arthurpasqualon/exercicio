@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableHighlight, Text, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableHighlight, Text, Image, ScrollView, Alert } from 'react-native';
 import api from '../services/api'
 import call from 'react-native-phone-call'
 //import { MapView } from 'react-native-maps'
 import Comments from '../components/Comments'
 import Header from '../components/Header'
-
 
 export default class Detail extends Component {
 
@@ -16,6 +15,7 @@ static navigationOptions = {
   state = {
     detail: {},
     comments: [],
+    modalVisible: false,
     region: {
       latitude: 37,
       longitude: -122.4324,
@@ -24,6 +24,9 @@ static navigationOptions = {
     },
   }
 
+  setModalVisible = () => {
+    this.setState({ modalVisible: true });
+  };
 
   async componentDidMount(){
     const id = this.props.navigation.state.params.task
@@ -61,16 +64,23 @@ static navigationOptions = {
           <View style={styles.container}>
             <View style={styles.menu}>
             <View style={styles.menuFirst}>
-            <TouchableHighlight onPress={() => call(args).catch(console.error)}>
-                <Image source={require(phone)} style={{width:'90%', height:70}} /> 
-            </TouchableHighlight>
+              <TouchableHighlight onPress={() => call(args).catch(console.error)}>
+                  <Image source={require(phone)} style={{width:'90%', height:70}} /> 
+              </TouchableHighlight>
             </View>
             <View style={styles.menuItens}>
-            <TouchableHighlight onPress={() => navigate('Services')}>
-                <Image style={{width:'90%', height:70}} source={require(services)}/>
-            </TouchableHighlight>
+              <TouchableHighlight onPress={() => navigate('Services')}>
+                  <Image style={{width:'90%', height:70}} source={require(services)}/>
+              </TouchableHighlight>
             </View>
-              <Image source={require(address)} style={styles.menuItens} />
+            <View style={styles.menuItens}>
+              <TouchableHighlight onPress={ () => {Alert.alert(
+              'Endereço',
+              `${this.state.detail.endereco}`
+              )}}>
+                <Image source={require(address)}style={{width:'90%', height:70}}/>
+              </TouchableHighlight>
+            </View>
               <Image source={require(comments)} style={styles.menuItens} />
               <Image source={require(favorites)} style={styles.menuLast} />
             </View>
